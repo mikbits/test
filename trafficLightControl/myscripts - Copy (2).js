@@ -1,5 +1,5 @@
 var changeStateEW = (function () {
-		var state = 0,
+    var state = 0,
         lamps = ["Red", "Yellow", "Green"],
         lampsLength = lamps.length,
         orderEW = [
@@ -12,7 +12,7 @@ var changeStateEW = (function () {
         orderIndex,
         sIdEW;
 
-    return function () {
+    return function (stop) {
         
 		setTimeout(function(){clearTimeout(sIdEW);return;},64000);
 
@@ -41,7 +41,7 @@ var changeStateEW = (function () {
 }());
 
 var changeStateNS = (function () {
-		var stateNS = 0,
+    var stateNS = 0,
         lamps = ["Red", "Yellow", "Green"],
         lampsLength = lamps.length,
 		orderNS = [
@@ -54,7 +54,7 @@ var changeStateNS = (function () {
         orderIndex,
         sIdNS;
 
-    return function () {
+    return function (stop) {
 
 		setTimeout(function(){clearTimeout(sIdNS);return;},64000);
 		

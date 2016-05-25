@@ -1,5 +1,5 @@
 var changeStateEW = (function () {
-		var state = 0,
+    var state = 0,
         lamps = ["Red", "Yellow", "Green"],
         lampsLength = lamps.length,
         orderEW = [
@@ -12,9 +12,11 @@ var changeStateEW = (function () {
         orderIndex,
         sIdEW;
 
-    return function () {
-        
-		setTimeout(function(){clearTimeout(sIdEW);return;},64000);
+    return function (stop) {
+        if (stop) {
+            clearTimeout(sIdEW);
+            return;
+        }
 
         var lamp,
         lampDOM;
@@ -41,7 +43,7 @@ var changeStateEW = (function () {
 }());
 
 var changeStateNS = (function () {
-		var stateNS = 0,
+    var stateNS = 0,
         lamps = ["Red", "Yellow", "Green"],
         lampsLength = lamps.length,
 		orderNS = [
@@ -54,10 +56,12 @@ var changeStateNS = (function () {
         orderIndex,
         sIdNS;
 
-    return function () {
+    return function (stop) {
+        if (stop) {
+            clearTimeout(sIdNS);
+            return;
+        }
 
-		setTimeout(function(){clearTimeout(sIdNS);return;},64000);
-		
         var lamp,
         lampDOM;
 		
@@ -82,9 +86,11 @@ var changeStateNS = (function () {
     };
 }());
 document.getElementById("trafficLight").addEventListener("click", (function () {
-   
+    var state = false;
+    
     return function () {
-        changeStateEW();
-		changeStateNS();
+        changeStateEW(state);
+		changeStateNS(state);
+        state = !state;
     };
 }()), false);
