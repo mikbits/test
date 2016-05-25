@@ -26,7 +26,7 @@
 
 			return function () {
 				
-				setTimeout(function(){clearTimeout(sIdEW);return;},TLM.totalTiime);
+				setTimeout(function(){clearTimeout(sIdEW);return;},64000);
 
 				var lamp,
 				lampDOM;
@@ -70,7 +70,7 @@
 
 			return function () {
 
-				setTimeout(function(){clearTimeout(sIdNS);return;},TLM.totalTiime);
+				setTimeout(function(){clearTimeout(sIdNS);return;},64000);
 				
 				var lamp,
 				lampDOM;
@@ -94,9 +94,10 @@
 					stateNS = 0;
 				}
 			};
-		}()),
-		totalTiime:30000
+		}())
 	};
 	
+	TLM.LampTime = 5000;
+	TLM.YellowLampTime = 3000;
 	TLM.init();
 })();
