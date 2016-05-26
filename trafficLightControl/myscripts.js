@@ -11,86 +11,74 @@
 		},
 		temp:0,
 		fun:function(){
+			setTimeout(function(){TLM.fun();document.getElementById("funTime").innerHTML= Math.floor(TLM.temp/60)+":"+TLM.temp%60;},1000);
 			TLM.temp+=1;
-			alert(TLM.temp);
-			setTimeout(TLM.fun,1000);
 		},
 		stateEW :0,
 		lampTime : 5000,
 		yellowLampTime : 3000,
-		sIdEW:null,		
-		changeStateEW : function(){				
-			setTimeout(function(){clearTimeout(TLM.sIdEW);return;},TLM.totalTiime);
+		sIdEW:null,
+		changeLampColor	: function(direction){
+			var dir1,dir2,state,order;
+			if(direction ==="EW"){
+				dir1="East";
+				dir2="West";
+				state = TLM.stateEW;
+				order = TLM.orderEW;
+			}else if(direction ==="NS"){
+				dir1="North";
+				dir2="South";
+				state = TLM.stateNS;
+				order = TLM.orderNS;
+			}
 			var lamp,
 			lampDOM;
-			for (lampIndex = 0; lampIndex < TLM.lamps.length; lampIndex += 1) {
+			for (var lampIndex = 0; lampIndex < TLM.lamps.length; lampIndex += 1) {
 				lamp = TLM.lamps[lampIndex];
-				lampDOME = document.getElementById(lamp+"East");
-				lampDOMW = document.getElementById(lamp+"West");
-				if (TLM.orderEW[TLM.stateEW].indexOf(lamp) !== -1) {
-					lampDOME.classList.add("lamp" + lamp);
-					lampDOMW.classList.add("lamp" + lamp);
+				lampDOM1 = document.getElementById(lamp+dir1);
+				lampDOM2 = document.getElementById(lamp+dir2);
+				if (order[state].indexOf(lamp) !== -1) {
+					lampDOM1.classList.add("lamp" + lamp);
+					lampDOM2.classList.add("lamp" + lamp);
 				} else {
-					lampDOME.classList.remove("lamp" + lamp);
-					lampDOMW.classList.remove("lamp" + lamp);
+					lampDOM1.classList.remove("lamp" + lamp);
+					lampDOM2.classList.remove("lamp" + lamp);
 				}
 			}
-			
+		},	
+		changeStateEW : function(){				
+			setTimeout(function(){clearTimeout(TLM.sIdEW);return;},TLM.totalTiime);
+			TLM.changeLampColor("EW");
 			TLM.sIdEW = setTimeout(TLM.changeStateEW, TLM.orderEW[TLM.stateEW][0]);
 			TLM.stateEW += 1;
 			if (TLM.stateEW >= TLM.lamps.length) {
 				TLM.stateEW = 0;
 			}
-	},
-		changeStateNS : (function () {
-				var stateNS = 0,
-				lampTime = 5000,
-				yellowLampTime = 3000,
-				lamps = ["Red", "Yellow", "Green"],
-				lampsLength = lamps.length,
-				orderNS = [
-					[lampTime+yellowLampTime, "Red"],
-					[lampTime, "Green"],
-					[yellowLampTime, "Yellow"]
-				],
-				orderLength = orderNS.length,
-				lampIndex,
-				orderIndex,
-				sIdNS;
-
-			return function () {
-
-				setTimeout(function(){clearTimeout(sIdNS);return;},TLM.totalTiime);
-				
-				var lamp,
-				lampDOM;
-				
-				for (lampIndex = 0; lampIndex < lampsLength; lampIndex += 1) {
-					lamp = lamps[lampIndex];
-					lampDOMN = document.getElementById(lamp+"North");
-					lampDOMS = document.getElementById(lamp+"South");
-					if (orderNS[stateNS].indexOf(lamp) !== -1) {
-						lampDOMN.classList.add("lamp" + lamp);
-						lampDOMS.classList.add("lamp" + lamp);
-					} else {
-						lampDOMN.classList.remove("lamp" + lamp);
-						lampDOMS.classList.remove("lamp" + lamp);
-					}
+		},
+		stateNS : 0,
+		sIdNS : null,
+		changeStateNS : function () {
+				setTimeout(function(){clearTimeout(TLM.sIdNS);return;},TLM.totalTiime);
+				TLM.changeLampColor("NS");
+				TLM.sIdNS = setTimeout(TLM.changeStateNS, TLM.orderNS[TLM.stateNS][0]);
+				TLM.stateNS += 1;
+				if (TLM.stateNS >= TLM.lamps.length) {
+					TLM.stateNS = 0;
 				}
-				
-				sIdNS = setTimeout(TLM.changeStateNS, orderNS[stateNS][0]);
-				stateNS += 1;
-				if (stateNS >= orderLength) {
-					stateNS = 0;
-				}
-			};
-		}()),
+
+		},
 		totalTiime:30000
 	};
+	
+	TLM.lamps = ["Red", "Yellow", "Green"];
 	TLM.orderEW = [
 					[TLM.lampTime, "Green"],
 					[TLM.yellowLampTime, "Yellow"],
 					[TLM.lampTime+TLM.yellowLampTime, "Red"]
 				];
-	TLM.lamps = ["Red", "Yellow", "Green"];
+	TLM.orderNS = [
+					[TLM.lampTime+TLM.yellowLampTime, "Red"],
+					[TLM.lampTime, "Green"],
+					[TLM.yellowLampTime, "Yellow"]
+				]
 	TLM.init();
